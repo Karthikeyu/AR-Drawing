@@ -15,34 +15,40 @@ public class ardrawline : MonoBehaviour
     float spawnDistance = 1f;
     private LineRenderer lineRenderer;
     Vector3 spawnPos;
-    public Text text;
+    private Text text;
+    public bool draw = false;
+    public Text drawMode;
+
 
     // Start is called before the first frame update
     void Start()
     {
         text.text = "false";
+        drawMode.text = "Draw";
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
-        if (Input.GetMouseButtonDown(0))
+        if (draw)
         {
-            createLine();
 
+            if (Input.GetMouseButtonDown(0))
+            {
+                createLine();
+
+
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                updateLine();
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                list.Clear();
+            }
 
         }
-        else if (Input.GetMouseButton(0))
-        {
-            updateLine();
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            list.Clear();
-        }
-
 
     }
 
@@ -121,5 +127,19 @@ public class ardrawline : MonoBehaviour
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         return ray.GetPoint(1f);
 
+    }
+
+    public void handleDrawing()
+    {
+        if(drawMode.text == "View")
+        {
+            draw = false;
+            drawMode.text = "Draw";
+
+        }else if(drawMode.text == "Draw")
+        {
+            draw = true;
+            drawMode.text = "View";
+        }
     }
 }
